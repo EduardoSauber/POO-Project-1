@@ -2,14 +2,14 @@
 
 ~~~
 Projeto/
-├── dados/
+├── data/
 ├── src/
 │   ├── __init__.py
 │   ├── client_System.py
 │   ├── persistency.py
-│   ├── Products_System.py
-│   └── Store_System.py
-├── testes/
+│   ├── products_System.py
+│   └── store_System.py
+├── tools/
 │   ├── __init__.py
 │   └── test_Mode.py
 └── main.py
