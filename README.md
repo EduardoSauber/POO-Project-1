@@ -1,7 +1,7 @@
 # Programação Orientada a Objetos (POO)
 
 ~~~
-trabalho_ed1/
+Projeto/
 ├── dados/                 # Arquivos de dados externos (.csv)
 ├── src/                   # Pasta raiz do seu código-fonte
 │   └── nucleo/            # O seu pacote principal
