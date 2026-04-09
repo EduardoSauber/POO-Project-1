@@ -4,14 +4,13 @@
 Projeto/
 ├── dados/
 ├── src/
-│   └── nucleo/
-│       ├── __init__.py
-│       ├── produtos.py
-│       ├── cliente.py
-│       ├── compras.py
-│       └── persistencia.py
+│   ├── __init__.py
+│   ├── client_System.py
+│   ├── persistency.py
+│   ├── Products_System.py
+│   └── Store_System.py
 ├── testes/
 │   ├── __init__.py
-│   └── test_produtos.py
+│   └── test_Mode.py
 └── main.py
 ~~
