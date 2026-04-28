@@ -3,63 +3,69 @@ import json
 from src.models.user import User, SuperUser
 
 # Class
-class userManager:
+class UserManager:
     def __init__(self):
-        self.__allusers = {'user_accounts' : [], 'superuser_accounts' : []}
+        self.__all_users = {'user_accounts' : [], 'superuser_accounts' : []}
         self.__autenticated_users = {}
 
-        #carregar as contas normais e super
+        self.read('user_accounts')
+        self.read('superuser_accounts')
 
     def read(self,database):
         account_class = SuperUser if (database == 'superuser_accounts') else User
         try:
-            with open(f"src/controller/data/{database}.json", "r") as file:
-                usr_data = json.load(file)
-                self.__allusers[database] = [account_class(**data) for data in usr_data]
+            with open(f"src/controller/data/{database}.json", "r") as FILE:
+                usr_data = json.load(FILE)
+                self.__all_users[database] = [account_class(**data) for data in usr_data]
         except FileNotFoundError:
-            self.__allusers[database].append(account_class('guest',"000","","",""))
+            self.__all_users[database].append(account_class('guest', "000", "", "", ""))
 
-    def write(self,database):
+    def __write(self, database):
         try:
-            with open(f"src/controller/data/{database}.json", "w") as file:
-                usr_data = [vars(UserAccount)]
+            with open(f"src/controller/data/{database}.json", "w") as FILE:
+                usr_data = [vars(usr_account) for usr_account in self.__all_users[database]]
+                json.dump(usr_data,FILE)
+                print(f"Aquivo '{database}.json' gravado com exito.")
         except FileNotFoundError:
-            raise TypeError(f"O sistema não conseguiu gerar o arquivo {database}.")
+            raise TypeError(f"O sistema não conseguiu gerar o arquivo '{database}.json'.")
 
-    def createUser(self,username,psswrd,email,contact,perms):
+    def createUser(self,username,psswrd,cpf,email,contact,perms):
         usr_type = 'superuser_accounts' if perms else 'user_accounts'
         usr_class = SuperUser if perms else User
 
-        new_usr = usr_class(username,psswrd,email,contact,perms) if perms else usr_class(username,psswrd,email,contact)
-        self.__allusers[usr_type].append(new_usr)
-        self.write(usr_type)
+        new_usr = usr_class(username,psswrd,cpf,email,contact,perms) if perms else usr_class(username,psswrd,cpf,email,contact)
+        self.__all_users[usr_type].append(new_usr)
+        self.__write(usr_type)
 
         return new_usr.username
 
     def removeUser(self,user):
         for usr_type in ['user_accounts','superuser_accounts']:
-            if user in self.__allusers:
+            if user in self.__all_users:
                 isSuper = ('(super)' if usr_type == 'superuser_accounts' else '')
                 print(f"O usuário {isSuper}{user.username} foi encontrado no sistema.")
 
-                self.__allusers[usr_type].remove(user)
+                self.__all_users[usr_type].remove(user)
                 print(f"O usuário {isSuper}{user.username} foi removido do sistema.")
 
-                self.write(usr_type)
+                self.__write(usr_type)
                 return user.username
         print(f"O usuário {user.username} não foi encontrado no sistema.")
         return None
 
     def getUserAccounts(self):
-        pass
+        return self.__all_users['user_accounts']
 
-    def getCurrentUser(self):
-        pass
+    def getCurrentUser(self,session_id):
+        if session_id in self.__autenticated_users:
+            return self.__autenticated_users[session_id]
+        else:
+            return None
 
-    def autenticateUser(self,username,psswrd):
+    def autenticateUser(self,cpf,psswrd):
         for usr_type in ['user_accounts','superuser_accounts']:
-            for user in self.__allusers[usr_type]:
-                if user.username == username and user.password == psswrd:
+            for user in self.__all_users[usr_type]:
+                if user.cpf == cpf and user.password == psswrd:
                     session_id = '123456' # coloca um sistema de gerar id, o HG usou uuid.uuid4()
                     self.__autenticated_users[session_id] = user
                     return session_id # retorna o ID para o user
