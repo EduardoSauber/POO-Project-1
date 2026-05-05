@@ -12,6 +12,7 @@ class UserManager:
         self.read('superuser_accounts')
 
     def read(self,database):
+        '''
         account_class = SuperUser if (database == 'superuser_accounts') else User
         try:
             with open(f"src/controller/data/{database}.json", "r") as FILE:
@@ -19,8 +20,11 @@ class UserManager:
                 self.__all_users[database] = [account_class(**data) for data in usr_data]
         except FileNotFoundError:
             self.__all_users[database].append(account_class('guest', "000", "", "", ""))
+        '''
+        pass
 
     def __write(self, database):
+        '''
         try:
             with open(f"src/controller/data/{database}.json", "w") as FILE:
                 usr_data = [vars(usr_account) for usr_account in self.__all_users[database]]
@@ -28,8 +32,11 @@ class UserManager:
                 print(f"Aquivo '{database}.json' gravado com exito.")
         except FileNotFoundError:
             raise TypeError(f"O sistema não conseguiu gerar o arquivo '{database}.json'.")
+        '''
+        pass
 
     def createUser(self,username,psswrd,cpf,email,contact,perms):
+        '''
         usr_type = 'superuser_accounts' if perms else 'user_accounts'
         usr_class = SuperUser if perms else User
 
@@ -38,8 +45,11 @@ class UserManager:
         self.__write(usr_type)
 
         return new_usr.username
+        '''
+        pass
 
     def removeUser(self,user):
+        '''
         for usr_type in ['user_accounts','superuser_accounts']:
             if user in self.__all_users:
                 isSuper = ('(super)' if usr_type == 'superuser_accounts' else '')
@@ -52,6 +62,8 @@ class UserManager:
                 return user.username
         print(f"O usuário {user.username} não foi encontrado no sistema.")
         return None
+        '''
+        pass
 
     def getUserAccounts(self):
         return self.__all_users['user_accounts']
@@ -63,6 +75,7 @@ class UserManager:
             return None
 
     def autenticateUser(self,cpf,psswrd):
+        '''
         for usr_type in ['user_accounts','superuser_accounts']:
             for user in self.__all_users[usr_type]:
                 if user.cpf == cpf and user.password == psswrd:
@@ -70,6 +83,8 @@ class UserManager:
                     self.__autenticated_users[session_id] = user
                     return session_id # retorna o ID para o user
         return None
+        '''
+        pass
 
     def logout(self, session_id):
         if session_id in self.__autenticated_users:
