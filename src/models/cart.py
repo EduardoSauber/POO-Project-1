@@ -5,16 +5,16 @@
 ########################################################################################################################
 # Class
 class UserCart:
-    def __init__(self,cpf:str):
+    def __init__(self,owner_id:str):
         self._owner = None
         self._products = [] # {'product_id','quantity'}
 
-        self.owner = cpf
+        self.owner = owner_id
         # self.add_product(product) R.I.P
 
     @property
     def owner(self):
-        return self.owner
+        return self._owner
     @owner.setter
     def owner(self,value:str):
         if value is not None and value.isdigit():
@@ -28,12 +28,13 @@ class UserCart:
 
     def add_product(self,value:dict):
         if isinstance(value, dict):
+            # verificar se o produto já existe
             self._products.append(value)
         else:
             raise TypeError("O valor inserido deve ser um dicionário.")
 
     def remove_product(self,product_id:str):
-        if isinstance(product_id,str) and product_id.isdigit():
+        if isinstance(product_id,str):
             for index, product in enumerate(self._products):
                 if product.get('product_id') == product_id:
                     del self._products[index]
@@ -56,6 +57,9 @@ def testbench():
 
     testeCarrinho.remove_product("12345")
     print(testeCarrinho.products)
+
+    testeVars = vars(testeCarrinho)
+    print(testeVars)
 
 if __name__ == '__main__':
     testbench()
