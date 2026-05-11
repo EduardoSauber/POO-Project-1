@@ -28,8 +28,12 @@ class UserCart:
 
     def add_product(self,value:dict):
         if isinstance(value, dict):
-            # verificar se o produto já existe
-            self._products.append(value)
+            for item in self._products:
+                if item.get("product_id") == value.get("product_id"):
+                    item["quantity"] = value["quantity"]
+                    break
+            else:
+                self._products.append(value)
         else:
             raise TypeError("O valor inserido deve ser um dicionário.")
 
@@ -47,12 +51,16 @@ class UserCart:
 def testbench():
     testeProduto = dict(product_id="12345",quantity=35)
     testeProduto2 = dict(product_id="67891",quantity=10000)
+    testeProduto3 = dict(product_id="67891", quantity=50000)
 
     testeCarrinho = UserCart("123")
 
     testeCarrinho.add_product(testeProduto)
     print(testeCarrinho.products)
     testeCarrinho.add_product(testeProduto2)
+    print(testeCarrinho.products)
+
+    testeCarrinho.add_product(testeProduto3)
     print(testeCarrinho.products)
 
     testeCarrinho.remove_product("12345")
