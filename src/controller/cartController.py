@@ -28,13 +28,16 @@ class CartManager:
             raise TypeError("Erro ao gerar arquivo 'user_carts.json'.")
 
     # Manuseamento de carrinho
-    def createCart(self,user_id):
+    def create_cart(self, user_id):
         new_cart = UserCart(user_id)
         self.__all_carts.append(new_cart)
         #self.__write()
         #return new_cart
 
-    def addToCart(self,owner_id:str,product_id:str,quantity:int):
+    def remove_cart(self):
+        pass
+
+    def add_to_cart(self, owner_id:str, product_id:str, quantity:int):
         if owner_id is not None:
             for cart in self.__all_carts:
                 if cart.owner == owner_id:
@@ -45,14 +48,15 @@ class CartManager:
                 # poderia criar um cartzinho nesse caso
                 print("Não existe carrinho para o usuário especificado.")
 
-    def removeFromCart(self,owner_id,product_id):
+    def remove_from_cart(self, owner_id, product_id):
         if owner_id is not None:
             for cart in self.__all_carts:
                 if cart.owner == owner_id:
                     cart.remove_product(product_id)
                     print(cart.products)
+                    break
 
-    def getUserCart(self,owner_id):
+    def get_user_cart(self, owner_id):
         return [item for item in self.__all_carts if item.owner == owner_id]
 
 ########################################################################################################################
@@ -63,12 +67,14 @@ def testbench():
 
     testeManager = CartManager()
 
-    testeManager.createCart("123")
-    testeManager.addToCart("123","produto123",5000)
-    testeManager.addToCart("123","nugget-e-mimosa",30)
-    testeManager.addToCart("456","produto123",30)
+    testeManager.create_cart("123")
+    testeManager.add_to_cart("123", "produto123", 5000)
+    testeManager.add_to_cart("123", "nugget-e-mimosa", 30)
+    testeManager.add_to_cart("456", "produto123", 30)
 
-    testeManager.removeFromCart("123","nugget-e-mimosa")
+    testeManager.add_to_cart("123", "produto123", 40)
+
+    testeManager.remove_from_cart("123", "nugget-e-mimosa")
 
 
 if __name__ == '__main__':
