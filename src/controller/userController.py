@@ -1,12 +1,14 @@
 # Import
 import json
+import uuid
+
 from src.models.user import User, SuperUser
 
 # Class
 class UserManager:
     def __init__(self):
         self.__all_users = {'user_accounts' : [], 'superuser_accounts' : []}
-        self.__autenticated_users = {}
+        self.__authenticated_users = {}
 
         self.read('user_accounts')
         self.read('superuser_accounts')
@@ -91,28 +93,39 @@ class UserManager:
                     return user
         return None
 
+    def get_session_id_user(self,session_id):
+        return self.__authenticated_users.get(session_id)
 
-    def get_current_user(self,session_id):
-        if session_id in self.__autenticated_users:
-            return self.__autenticated_users[session_id]
-        else:
-            return None
+    def get_username(self,session_id:str):
+        user = self.get_session_id_user(session_id)
+        return user.username if user else None
 
-    def autenticate_user(self,cpf,psswrd):
-        '''
-        for usr_type in ['user_accounts','superuser_accounts']:
-            for user in self.__all_users[usr_type]:
-                if user.cpf == cpf and user.password == psswrd:
-                    session_id = '123456' # coloca um sistema de gerar id, o HG usou uuid.uuid4()
-                    self.__autenticated_users[session_id] = user
-                    return session_id # retorna o ID para o user
+    def get_user_session_id(self,user_id:str):
+        for session_id in self.__authenticated_users:
+            if user_id == self.__authenticated_users[session_id].cpf:
+                return session_id
         return None
-        '''
-        pass
+
+    def get_session_permissions(self, session_id):
+        user = self.__authenticated_users.get(session_id)
+
+        if user and hasattr(user,'permissions'):
+            return user.permissions
+        return []
+
+    def authenticate_user(self, cpf:str, psswrd:str):
+        user = self.get_user_account(cpf)
+
+        if user is not None and user.checkPassword(psswrd):
+            session_id = uuid.uuid4().hex
+            self.__authenticated_users[session_id] = user
+            return session_id
+
+        return None
 
     def logout(self, session_id):
-        if session_id in self.__autenticated_users:
-            del self.__autenticated_users[session_id] # remove o user logado
+        if session_id in self.__authenticated_users:
+            del self.__authenticated_users[session_id] # remove o user logado
 
 # Test bench
 def testbench():
