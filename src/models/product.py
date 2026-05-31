@@ -1,14 +1,9 @@
 class Product:
     def __init__(self,name,product_id,price,stock):
-        self._name = None
-        self._product_id = None
-        self._price = None
-        self._stock = None
-
-        self.name = name
-        self.product_id = product_id
-        self.price = price
-        self.stock = stock
+        self._name = name
+        self._product_id = product_id
+        self._price = price
+        self._stock = stock
 
     # String de retorno
     def __str__(self):
@@ -54,6 +49,14 @@ class Product:
             self._stock = value
         else:
             raise TypeError("O valor inserido deve ser um integer!")
+
+    def to_dict(self):
+        return {
+            "name":self.name,
+            "product_id":self.product_id,
+            "price":self.price,
+            "stock":self.stock
+        }
 
 ########################################################################################################################
 # Testbench
