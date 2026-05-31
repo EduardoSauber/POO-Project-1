@@ -52,6 +52,7 @@ class UserManager:
         self.__all_users[user_type].append(new_user)
         print("Usuário cadastrado no sistema com exito.")
         #self.__write()
+        return new_user
 
     def modify_user(self,user_id:str,n_username=None,n_pswrd=None,n_cpf=None,n_mail=None,n_contact=None):
         user = self.get_user_account(user_id)
