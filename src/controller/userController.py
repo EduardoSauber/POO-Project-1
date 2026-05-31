@@ -93,6 +93,9 @@ class UserManager:
     def get_user_accounts(self):
         return self.__all_users.get("user_accounts")
 
+    def get_superuser_accounts(self):
+        return self.__all_users.get("superuser_accounts")
+
     def get_user_account(self,user_id:str):
         for user_type in ['user_accounts','superuser_accounts']:
             for user in self.__all_users[user_type]:
