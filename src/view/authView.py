@@ -1,6 +1,4 @@
 import getpass
-from os import name
-
 
 class AuthView:
     def __init__(self,app):
@@ -39,11 +37,16 @@ class AuthView:
         finalized = False
         while finalized == False:
             print("--- CADASTRAR-SE ---")
+            print("Digite 'sair' para cancelar o cadastro.\nNão é possível cancelar durante a senha.\n")
 
             name = None
             while True:
                 print("Digite o nome de usuário (não pode conter números ou simbolos):")
                 inpt = input().strip()
+                if inpt.lower() == "sair":
+                    print("Cadastro Cancelado.")
+                    finalized = True
+                    return
                 if inpt and inpt.replace(" ","").isalpha():
                     name = inpt
                     break
@@ -54,6 +57,10 @@ class AuthView:
             while True:
                 print("Digite seu CPF (sem pontuação):")
                 inpt = input().strip().replace("-","").replace(".","")
+                if inpt.lower() == "sair":
+                    print("Cadastro Cancelado.")
+                    finalized = True
+                    return
                 if inpt and inpt.replace(" ","").isnumeric() and len(inpt) == 11:
                     cpf = inpt
                     break
@@ -64,6 +71,10 @@ class AuthView:
             while True:
                 print("Digite seu e-mail:")
                 inpt = input().strip()
+                if inpt.lower() == "sair":
+                    print("Cadastro Cancelado.")
+                    finalized = True
+                    return
                 if inpt and "@" in inpt and "." in inpt:
                     email = inpt
                     break
@@ -74,6 +85,10 @@ class AuthView:
             while True:
                 print("Digite seu número de contato (Com DDD e 9, sem pontuações):")
                 inpt = input().strip().replace("-", "").replace(" ","")
+                if inpt.lower() == "sair":
+                    print("Cadastro Cancelado.")
+                    finalized = True
+                    return
                 if inpt.isnumeric() and len(inpt) == 11:
                     contact = inpt
                     break
@@ -100,6 +115,6 @@ class AuthView:
                 else:
                     print("Senhas não coincidem! Tente novamente.")
 
-            user = self._app.signin([name,password,cpf,email,contact])
+            user = self._app.signin([name,password,cpf,email,contact,False])
             if user:
                 finalized = True
