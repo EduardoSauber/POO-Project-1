@@ -1,7 +1,5 @@
 ########################################################################################################################
 # import
-from getpass import getpass
-
 from src.controller.userController import UserManager
 from src.controller.productController import ProductManager
 from src.controller.cartController import CartManager
@@ -11,14 +9,13 @@ from src.controller.cartController import CartManager
 class AppManager:
     def __init__(self,file_path):
         self._user_manager = UserManager(file_path)
-        self._product_manager = ProductManager()
+        self._product_manager = ProductManager(file_path)
         self._cart_manager = CartManager()
 
         # achar um jeito melhor de criar um admin inicial
         #self._user_manager.create_user("ADMIN", "admin123", "99", "admin@mail", "0", ['admin'])
 
         self._personal_session_id = None
-        self.personal_permissions = self._user_manager.get_session_permissions(self.personal_session_id)
 
     @property
     def personal_session_id(self):
@@ -28,11 +25,16 @@ class AppManager:
         self._personal_session_id = value
 
     @property
+    def personal_permissions(self):
+        return self._user_manager.get_session_permissions(self.personal_session_id)
+
+    @property
     def is_user_admin(self):
         if self.personal_session_id:
             return self._user_manager.get_session_id_user(self.personal_session_id).is_admin()
         else:
             return False
+
     # --- LOGIN E CADASTRO DE USUARIO ---
     def login(self,user_id,password):
         check_session_id = self._user_manager.authenticate_user(user_id,password)
@@ -46,7 +48,7 @@ class AppManager:
 
     def signin(self,data:list):
         if data:
-            user = self._user_manager.create_user(data[0],data[1],data[2],data[3],data[4],False)
+            user = self._user_manager.create_user(data[0],data[1],data[2],data[3],data[4],data[5])
             if user:
                 return True
         return False
@@ -54,6 +56,10 @@ class AppManager:
     def logout(self):
         self._user_manager.logout(self.personal_session_id)
         self.personal_session_id = None
+
+
+    def get_all_products(self):
+        return self._product_manager.get_products()
 
 
 # testbench
