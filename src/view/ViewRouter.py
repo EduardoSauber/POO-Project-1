@@ -2,6 +2,7 @@ from src.controller.appController import AppManager
 from view.authView import AuthView
 from view.userView import UserView
 from view.adminView import AdminView
+from view.storeView import StoreView
 
 class ViewRouter:
     def __init__(self,file_path):
@@ -10,7 +11,9 @@ class ViewRouter:
         self.running = True
 
         self._auth_view = AuthView(self._app)
-        self._user_view = UserView(self._app)
+        self._store_view = StoreView(self._app)
+
+        self._user_view = UserView(self._app,self._store_view)
         self._admin_view = AdminView(self._app)
 
     def start(self):
