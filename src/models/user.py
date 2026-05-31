@@ -1,20 +1,12 @@
 ########################################################################################################################
 # Class
 class User:
-    def __init__(self,username:str,psswrd:str,cpf:str,email:str,contact:str):
-        self._username = None
-        self.__password = None
-        self._cpf = None
-        self._email = None
-        self._contact = None
-
-        self.username = username
-        self.password = psswrd
-        self.cpf = cpf
-        self.email = email
-        self.contact = contact
-
-    # string de retorno
+    def __init__(self,username:str,password:str,cpf:str,email:str,contact:str):
+        self._username = username
+        self.__password = password # criptografar a senha dps
+        self._cpf = cpf
+        self._email = email
+        self._contact = contact
     def __str__(self):
         return f"Usuário: {self.username} | CPF: {self.cpf} | E-mail: {self.email} | Contato: {self.contact}"
 
@@ -24,7 +16,7 @@ class User:
         return self._username
     @username.setter
     def username(self,value:str):
-        if value is not None and isinstance(value,str): # Talvez remover o caso None já que username não é tão importante
+        if value is not None and isinstance(value,str):
             self._username = value
         else:
             raise TypeError("O username deve ser um string!")
@@ -47,7 +39,7 @@ class User:
         if value is not None and value.isdigit():
             self._cpf = value
         else:
-            raise TypeError("O user_id deve ser um string de números!")
+            raise TypeError("O cpf deve ser um string de números!")
 
     @property
     def email(self):
@@ -70,45 +62,38 @@ class User:
             raise TypeError("O contact deve ser um string de números!")
 
     # Métodos adicionais
-    def isAdmin(self):
+    def to_dict(self):
+        return {
+            "username": self._username,
+            "password": self.__password,
+            "cpf": self._cpf,
+            "email": self._email,
+            "contact": self._contact
+        }
+    def is_admin(self):
         return False
 
-    def checkPassword(self,value:str):
-        '''
-        uma forma de verificar a senha de um usuário sem deixar a senha visível para o sistema inteiro
-        '''
+    def check_password(self,value:str):
         return self.__password == value
 
 class SuperUser(User):
-    def __init__(self,username,psswrd,cpf,email,contact,permissions):
-        super().__init__(username,psswrd,cpf,email,contact)
-        self.permissions = permissions
+    def __init__(self,username,password,cpf,email,contact,permissions):
+        super().__init__(username,password,cpf,email,contact)
+        self._permissions = permissions
         if not permissions:
-            self.permissions = ['user']
-
-    # string de retorno
+            self._permissions = ['user']
     def __str__(self):
-        return f"Usuário: {self.username} | CPF: {self.cpf} | E-mail: {self.email} | Contato: {self.contact} | Perms: {self.permissions}"
+        return f"Usuário: {self.username} | CPF: {self.cpf} | E-mail: {self.email} | Contato: {self.contact} | Perms: {self._permissions}"
 
-    def isAdmin(self):
+    @property
+    def permissions(self):
+        return self._permissions
+
+    def to_dict(self):
+        data = super().to_dict()
+        data["permissions"] = self._permissions
+
+        return data
+
+    def is_admin(self):
         return True
-
-########################################################################################################################
-# Testbench
-
-def testbench():
-    userTeste = User("DinoSarro123","dinobambino","123456","dinossaro@email.ru","40028922")
-    print(userTeste)
-    print(userTeste.password)
-    userTeste.password = "DinoBrewster"
-    userTeste.username = "Dino Brewster"
-    print(userTeste.password)
-    print(userTeste)
-
-    suserTeste = SuperUser("Tobey Marshall","pete4ever","2015","tobymrshall@nfs.mw","123456",['admin','DeLeon'])
-    suserTeste2 = SuperUser("Finn","mr_robot","3778459","finn.nn","1234567",False)
-    print(suserTeste)
-    print(suserTeste2)
-
-if __name__ == "__main__":
-    testbench()
