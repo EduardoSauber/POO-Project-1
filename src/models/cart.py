@@ -5,12 +5,14 @@
 ########################################################################################################################
 # Class
 class UserCart:
-    def __init__(self,owner_id:str):
-        self._owner = None
-        self._products = [] # {'product_id','quantity'}
+    def __init__(self,owner_id:str,products:dict = None):
+        self._owner = owner_id
 
-        self.owner = owner_id
-        # self.add_product(product) R.I.P
+        #self._products = {} # {'product_id': quantity}
+        if products is not None:
+            self._products = products
+        else:
+            self._products = {}
 
     @property
     def owner(self):
@@ -26,48 +28,28 @@ class UserCart:
     def products(self):
         return self._products
 
-    def add_product(self,value:dict):
-        if isinstance(value, dict):
-            for item in self._products:
-                if item.get("product_id") == value.get("product_id"):
-                    item["quantity"] = value["quantity"]
-                    break
+    def add_product(self,product_id:str,quantity: int):
+        if product_id:
+            if product_id in self._products:
+                self._products[product_id] += quantity
             else:
-                self._products.append(value)
-        else:
-            raise TypeError("O valor inserido deve ser um dicionário.")
+                self._products[product_id] = quantity
 
     def remove_product(self,product_id:str):
-        if isinstance(product_id,str):
-            for index, product in enumerate(self._products):
-                if product.get('product_id') == product_id:
-                    del self._products[index]
-                    break
-        else:
-            raise TypeError("O ID de produto deve ser uma string de números!")
+        if product_id:
+            if product_id in self._products:
+                del self._products[product_id]
+
+    def to_dict(self):
+        return {
+            "owner_id": self._owner,
+            "products": self._products
+        }
 
 ########################################################################################################################
 # Testbench
 def testbench():
-    testeProduto = dict(product_id="12345",quantity=35)
-    testeProduto2 = dict(product_id="67891",quantity=10000)
-    testeProduto3 = dict(product_id="67891", quantity=50000)
-
-    testeCarrinho = UserCart("123")
-
-    testeCarrinho.add_product(testeProduto)
-    print(testeCarrinho.products)
-    testeCarrinho.add_product(testeProduto2)
-    print(testeCarrinho.products)
-
-    testeCarrinho.add_product(testeProduto3)
-    print(testeCarrinho.products)
-
-    testeCarrinho.remove_product("12345")
-    print(testeCarrinho.products)
-
-    testeVars = vars(testeCarrinho)
-    print(testeVars)
+    pass
 
 if __name__ == '__main__':
     testbench()

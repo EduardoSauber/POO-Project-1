@@ -6,36 +6,45 @@ from src.models.cart import UserCart
 ########################################################################################################################
 # Class
 class CartManager:
-    def __init__(self):
-        self.__all_carts = [] #verifica dps se realmente é '__'
+    def __init__(self,data_path):
+        self.__all_carts = []
+        self.__DATA_PATH = data_path
 
     # Leitura e Escrita de Banco de Dados
     def read(self):
         try:
-            with open('src/controller/data/user_cars.json','r') as FILE:
-                user_cart = json.load(FILE)
-                self.__all_carts = [UserCart(**cart) for cart in user_cart]
+            with open(f"{self.__DATA_PATH}/carts.json", "r") as FILE:
+                cart_data = json.load(FILE)
+                self.__all_carts = [UserCart(**data) for data in cart_data]
         except FileNotFoundError:
-            print("Não foi possível encontrar um banco de dados para 'user_carts'.")
+            print("cartController: Não foi encontrado um banco de dados de carrinhos.")
 
     def __write(self):
         try:
-            with open('src/controllers/data/user_carts.json','w') as FILE:
-                user_cart = [vars(user_cart) for user_cart in self.__all_carts]
-                json.dump(user_cart,FILE)
-                print("Exito ao gerar arquivo 'user_carts.json'.")
+            with open(f"{self.__DATA_PATH}/carts.json", "w") as FILE:
+                prdct_data = [product.to_dict() for product in self.__all_products]
+                json.dump(prdct_data, FILE)
+                print(f"cartController: Aquivo 'carts.json' gravado com exito.")
         except FileNotFoundError:
-            raise TypeError("Erro ao gerar arquivo 'user_carts.json'.")
+            raise TypeError(f"cartController: O sistema não conseguiu gerar o arquivo 'carts.json'.")
 
     # Manuseamento de carrinho
-    def create_cart(self, user_id):
+    def get_cart(self, user_id):
+        for cart in self.__all_carts:
+            if cart.owner == user_id:
+                return cart
+
         new_cart = UserCart(user_id)
         self.__all_carts.append(new_cart)
-        #self.__write()
-        #return new_cart
+        self.__write()
+        return new_cart
 
-    def remove_cart(self):
-        pass
+    def remove_cart(self,owner_id):
+        for index, cart in enumerate(self.__all_carts):
+            if cart.owner == owner_id:
+                del self.__all_carts[index]
+                self.__write()
+                break
 
     def add_to_cart(self, owner_id:str, product_id:str, quantity:int):
         if owner_id is not None:
@@ -53,11 +62,11 @@ class CartManager:
             for cart in self.__all_carts:
                 if cart.owner == owner_id:
                     cart.remove_product(product_id)
-                    print(cart.products)
+                    #print(cart.products)
                     break
 
-    def get_user_cart(self, owner_id):
-        return [item for item in self.__all_carts if item.owner == owner_id]
+    def get_user_cart_products(self, owner_id):
+        return [cart.products for cart in self.__all_carts if cart.owner == owner_id]
 
 ########################################################################################################################
 # Testbench
@@ -65,16 +74,7 @@ class CartManager:
 def testbench():
     print("Rodando Modo Teste!\n\n")
 
-    testeManager = CartManager()
-
-    testeManager.create_cart("123")
-    testeManager.add_to_cart("123", "produto123", 5000)
-    testeManager.add_to_cart("123", "nugget-e-mimosa", 30)
-    testeManager.add_to_cart("456", "produto123", 30)
-
-    testeManager.add_to_cart("123", "produto123", 40)
-
-    testeManager.remove_from_cart("123", "nugget-e-mimosa")
+    testeManager = CartManager("./data")
 
 
 if __name__ == '__main__':
