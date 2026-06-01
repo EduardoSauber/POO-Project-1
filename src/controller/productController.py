@@ -40,6 +40,7 @@ class ProductManager:
             else:
                 novo_produto = Product(product_name,product_id,price,quantity_to_stock)
                 self.__all_products.append(novo_produto)
+                return novo_produto
                 self.__write()
 
     def edit_on_stock(self,product_id,new_product_id,new_product_name,new_price,new_quantity):
@@ -67,8 +68,11 @@ class ProductManager:
                     self.__write()
                     break
 
-    def get_product(self,product_id):
-        pass
+    def get_product_by_id(self,product_id):
+        for product in self.__all_products:
+            if product.product_id == product_id:
+                return product
+        return None
 
     def get_products(self):
         return self.__all_products

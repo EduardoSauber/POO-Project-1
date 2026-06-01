@@ -61,12 +61,7 @@ class Product:
 ########################################################################################################################
 # Testbench
 def testbench():
-    testeProduto = Product("Fortnite","12345",15.90,50)
-    print(testeProduto)
-    testeProduto.price = 5.50
-    testeProduto.stock = 4
-    print(testeProduto)
-
+    pass
 
 if __name__ == '__main__':
     testbench()
