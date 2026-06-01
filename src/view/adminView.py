@@ -1,8 +1,9 @@
 import getpass
 
 class AdminView:
-    def __init__(self,app):
+    def __init__(self,app,storeview_instance):
         self._app = app
+        self._store_view = storeview_instance
 
     def main_menu(self):
         print("--- Painel de Administração ---")
@@ -14,7 +15,6 @@ class AdminView:
         if 'cashier' in perms or 'admin' in perms:
             print("-- Operações de Caixa --")
             print("[ 3 ] - Processar Venda Física")
-            print("[ x ] - [W.I.P]")
         if 'admin' in perms:
             print("-- Gerenciamento de Sistema --")
             print("[ 4 ] - Gerenciar Administradores")
@@ -52,8 +52,7 @@ class AdminView:
                 print("Opção inválida!")
 
     def products_catalog(self):
-        # storeView cuida dessa parte
-        pass
+        self._store_view.list_products()
 
     def sales_record(self):
         # talvez storeView
@@ -197,5 +196,24 @@ class AdminView:
         pass
 
     def manage_products(self):
-        # storeView cuida dessa parte
-        pass
+        aberto = True
+        while aberto == True:
+            print("[ 1 ] - Adicionar Produto")
+            print("[ 2 ] - Editar Produto")
+            print("[ 3 ] - Remover Produto")
+            print("[ 0 ] - Sair")
+            opcao = input("Opção: ")
+            match opcao:
+                case '1':
+                    self._store_view.create_product()
+                case '2':
+                    pass
+                case '3':
+                    pass
+                case '4':
+                    pass
+                case '0':
+                    aberto = False
+                case _:
+                    print("Opção inválida!")
+

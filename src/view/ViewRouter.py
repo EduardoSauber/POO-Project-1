@@ -14,7 +14,7 @@ class ViewRouter:
         self._store_view = StoreView(self._app)
 
         self._user_view = UserView(self._app,self._store_view)
-        self._admin_view = AdminView(self._app)
+        self._admin_view = AdminView(self._app,self._store_view)
 
     def start(self):
         while self.running:
