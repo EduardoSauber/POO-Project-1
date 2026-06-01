@@ -3,6 +3,7 @@
 from src.controller.userController import UserManager
 from src.controller.productController import ProductManager
 from src.controller.cartController import CartManager
+from src.controller.storeController import StoreManager
 
 ########################################################################################################################
 # class
@@ -10,7 +11,8 @@ class AppManager:
     def __init__(self,file_path):
         self._user_manager = UserManager(file_path)
         self._product_manager = ProductManager(file_path)
-        self._cart_manager = CartManager()
+        self._cart_manager = CartManager(file_path)
+        self._store_manager = StoreManager(self._product_manager,self._cart_manager)
 
         # achar um jeito melhor de criar um admin inicial
         #self._user_manager.create_user("ADMIN", "admin123", "99", "admin@mail", "0", ['admin'])
@@ -49,17 +51,22 @@ class AppManager:
     def signin(self,data:list):
         if data:
             user = self._user_manager.create_user(data[0],data[1],data[2],data[3],data[4],data[5])
-            if user:
-                return True
+            return True if user else False
         return False
 
     def logout(self):
         self._user_manager.logout(self.personal_session_id)
         self.personal_session_id = None
 
+    # --- LOJA, PRODUTOS E CARRINHOS ---
+    def create_product(self,data:list):
+        if data:
+            product = self._store_manager.create_product(data)
+            return True if product else False
+        return False
 
     def get_all_products(self):
-        return self._product_manager.get_products()
+        return self._store_manager.get_all_products()
 
 
 # testbench
