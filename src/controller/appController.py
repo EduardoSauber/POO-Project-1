@@ -65,6 +65,10 @@ class AppManager:
             return True if product else False
         return False
 
+    def get_product(self,product_id:str):
+        if product_id:
+            return self._store_manager.get_product(product_id)
+
     def get_all_products(self):
         return self._store_manager.get_all_products()
 

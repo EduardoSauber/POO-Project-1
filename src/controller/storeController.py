@@ -8,10 +8,13 @@ class StoreManager:
         if data:
             instance = self._product_manager.add_to_stock(data[0],data[1],data[2],data[3])
             return instance
+        return None
 
-    def get_product(self,product_id):
+    def get_product(self,product_id:str):
         if product_id:
-            pass
+            return self._product_manager.get_product_by_id(product_id)
+        else:
+            return None
 
     def get_all_products(self):
         return self._product_manager.get_products()

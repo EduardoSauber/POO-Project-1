@@ -73,7 +73,7 @@ class StoreView:
         for product in products:
             print(product)
 
-    def add_to_user_cart(self):
+    def add_to_user_cart(self,owner_id : str):
         finalized = False
         while finalized == False:
             print("--- Adicionar ao Carrinho ---")
@@ -81,7 +81,7 @@ class StoreView:
                 print("Digite o código do produto (apenas letras e números, sem espaços):")
                 inpt = input("").strip()
                 if inpt.lower() == "sair":
-                    print("Cadastro Cancelado.")
+                    print("Operação Cancelada.")
                     finalized = True
                     return
                 if inpt.isalnum():
@@ -89,3 +89,13 @@ class StoreView:
                     break
                 else:
                     print("Entrada inválida! Tente novamente.")
+
+            product = self._app.get_product(product_id)
+            if product:
+                    #quantity = input()
+                    #app.add_to_cart(product,quantity)
+                    pass
+            else:
+                print("Produto inserido não existe na loja!")
+                finalized = True
+                return
