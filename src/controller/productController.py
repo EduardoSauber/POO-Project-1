@@ -40,8 +40,8 @@ class ProductManager:
             else:
                 novo_produto = Product(product_name,product_id,price,quantity_to_stock)
                 self.__all_products.append(novo_produto)
-                return novo_produto
                 self.__write()
+                return novo_produto
 
     def edit_on_stock(self,product_id,new_product_id,new_product_name,new_price,new_quantity):
         if product_id is not None:
