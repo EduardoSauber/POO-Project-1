@@ -22,7 +22,7 @@ class UserCart:
         if value is not None and value.isdigit():
             self._owner = value
         else:
-            raise TypeError("")
+            raise TypeError("O valor inserido deve ser uma string de números!")
 
     @property
     def products(self):

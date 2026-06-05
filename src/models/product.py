@@ -34,11 +34,11 @@ class Product:
     def price(self):
         return self._price
     @price.setter
-    def price(self,value:float):
-        if  isinstance(value,float):
-            self._price = value
+    def price(self,value):
+        if float(value):
+            self._price = float(value)
         else:
-            raise TypeError("O valor inserido deve ser um float!")
+            raise TypeError("O valor inserido deve ser um número!")
 
     @property
     def stock(self):
