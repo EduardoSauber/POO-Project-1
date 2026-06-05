@@ -31,8 +31,7 @@ class UserView:
         self._store_view.list_products()
 
     def add_to_cart(self):
-        # storeView cuida dessa parte
-        pass
+        self._store_view.add_to_user_cart(self._app.get_user_by_sessionid(self._app.personal_session_id).cpf)
 
     def remove_from_cart(self):
         # storeView cuida dessa parte

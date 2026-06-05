@@ -18,3 +18,8 @@ class StoreManager:
 
     def get_all_products(self):
         return self._product_manager.get_products()
+
+    def add_to_user_cart(self,data:list):
+        if data:
+            return self._cart_manager.add_to_user_cart(data[0],data[1],data[2])
+        return False

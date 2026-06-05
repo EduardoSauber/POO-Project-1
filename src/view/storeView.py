@@ -79,7 +79,7 @@ class StoreView:
             print("--- Adicionar ao Carrinho ---")
             while True:
                 print("Digite o código do produto (apenas letras e números, sem espaços):")
-                inpt = input("").strip()
+                inpt = input().strip()
                 if inpt.lower() == "sair":
                     print("Operação Cancelada.")
                     finalized = True
@@ -91,11 +91,32 @@ class StoreView:
                     print("Entrada inválida! Tente novamente.")
 
             product = self._app.get_product(product_id)
-            if product:
-                    #quantity = input()
-                    #app.add_to_cart(product,quantity)
-                    pass
-            else:
-                print("Produto inserido não existe na loja!")
-                finalized = True
-                return
+            if not product:
+                print(f"Produto '{product_id}' não existe no estoque!")
+                continue
+
+            print(f">> {product}")
+
+            while True:
+                print("Digite a quantidade desejada:")
+                inpt = input().strip()
+                if inpt.lower() == "sair":
+                    print("Operação Cancelada.")
+                    finalized = True
+                    return
+                if inpt.isnumeric() and int(inpt) > 0:
+                    quantity = int(inpt)
+                    if quantity > product.stock:
+                        print(f"Apenas {product.stock} unidades em estoque!")
+                        continue
+
+                    event = self._app.add_to_user_cart([owner_id,product_id,quantity])
+
+                    if event:
+                        print("Produto adicionado ao carrinho!")
+                        return
+                    else:
+                        print("Erro ao adicionar ao carrinho!")
+                        return
+                else:
+                    print("Entrada inválida! Tente novamente.")

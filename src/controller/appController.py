@@ -58,6 +58,11 @@ class AppManager:
         self._user_manager.logout(self.personal_session_id)
         self.personal_session_id = None
 
+    def get_user_by_sessionid(self,session_id):
+        if session_id:
+            return self._user_manager.get_session_id_user(session_id)
+        return None
+
     # --- LOJA, PRODUTOS E CARRINHOS ---
     def create_product(self,data:list):
         if data:
@@ -68,9 +73,15 @@ class AppManager:
     def get_product(self,product_id:str):
         if product_id:
             return self._store_manager.get_product(product_id)
+        return None
 
     def get_all_products(self):
         return self._store_manager.get_all_products()
+
+    def add_to_user_cart(self,data:list):
+        if data:
+            return self._store_manager.add_to_user_cart(data)
+        return False
 
 
 # testbench
