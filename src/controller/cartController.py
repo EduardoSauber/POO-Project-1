@@ -22,8 +22,8 @@ class CartManager:
     def __write(self):
         try:
             with open(f"{self.__DATA_PATH}/carts.json", "w") as FILE:
-                prdct_data = [product.to_dict() for product in self.__all_products]
-                json.dump(prdct_data, FILE)
+                cart_data = [cart.to_dict() for cart in self.__all_carts]
+                json.dump(cart_data, FILE)
                 print(f"cartController: Aquivo 'carts.json' gravado com exito.")
         except FileNotFoundError:
             raise TypeError(f"cartController: O sistema não conseguiu gerar o arquivo 'carts.json'.")
@@ -46,16 +46,13 @@ class CartManager:
                 self.__write()
                 break
 
-    def add_to_cart(self, owner_id:str, product_id:str, quantity:int):
-        if owner_id is not None:
-            for cart in self.__all_carts:
-                if cart.owner == owner_id:
-                    cart.add_product({'product_id':product_id,'quantity':quantity})
-                    print(cart.products)
-                    break
-            else:
-                # poderia criar um cartzinho nesse caso
-                print("Não existe carrinho para o usuário especificado.")
+    def add_to_user_cart(self, owner_id:str, product_id:str, quantity:int):
+        if owner_id:
+            cart = self.get_cart(owner_id)
+            cart.add_product(product_id,quantity)
+            self.__write()
+            return True
+        return False
 
     def remove_from_cart(self, owner_id, product_id):
         if owner_id is not None:

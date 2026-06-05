@@ -42,8 +42,8 @@ class UserCart:
 
     def to_dict(self):
         return {
-            "owner_id": self._owner,
-            "products": self._products
+            'owner_id': self._owner,
+            'products': self._products
         }
 
 ########################################################################################################################
