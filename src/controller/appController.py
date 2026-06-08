@@ -70,6 +70,12 @@ class AppManager:
             return True if product else False
         return False
 
+    def delete_product(self,product_id:str):
+        if product_id:
+            event = self._store_manager.delete_product(product_id)
+            return event
+        return False
+
     def get_product(self,product_id:str):
         if product_id:
             return self._store_manager.get_product(product_id)

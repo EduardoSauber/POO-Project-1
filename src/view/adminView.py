@@ -192,6 +192,30 @@ class AdminView:
             if user:
                 finalized = True
 
+    def edit_admins(self):
+        aberto = True
+        while aberto == True:
+            print("[ 1 ] - Editar Nome")
+            print("[ 2 ] - Editar CPF")
+            print("[ 3 ] - Editar Contato")
+            print("[ 4 ] - Editar Permissões")
+            print("[ 5 ] - Editar Senha")
+            print("[ 0 ] - Sair")
+            opcao = input("Opção: ")
+            match opcao:
+                case '1':
+                    pass
+                case '2':
+                    pass
+                case '3':
+                    pass
+                case '4':
+                    pass
+                case '0':
+                    aberto = False
+                case _:
+                    print("Opção inválida!")
+
     def manage_users(self):
         pass
 
@@ -209,7 +233,7 @@ class AdminView:
                 case '2':
                     pass
                 case '3':
-                    pass
+                    self._store_view.delete_product()
                 case '4':
                     pass
                 case '0':

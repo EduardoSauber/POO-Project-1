@@ -59,8 +59,18 @@ class CartManager:
             for cart in self.__all_carts:
                 if cart.owner == owner_id:
                     cart.remove_product(product_id)
-                    #print(cart.products)
+                    self.__write()
                     break
+
+    def remove_from_all_carts(self,product_id:str):
+        if not product_id:
+            return False
+        r_flag = False
+        for cart in self.__all_carts:
+            cart.remove_product(product_id)
+        self.__write()
+        return True
+
 
     def get_user_cart_products(self, owner_id):
         return [cart.products for cart in self.__all_carts if cart.owner == owner_id]

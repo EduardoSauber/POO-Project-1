@@ -1,9 +1,10 @@
 ########################################################################################################################
 # Import
+from logging import FATAL
 
 
 ########################################################################################################################
-# Class
+# ClassUser
 class UserCart:
     def __init__(self,owner_id:str,products:dict = None):
         self._owner = owner_id
@@ -29,16 +30,26 @@ class UserCart:
         return self._products
 
     def add_product(self,product_id:str,quantity: int):
+        if not product_id:
+            return False
         if product_id:
             if product_id in self._products:
                 self._products[product_id] += quantity
             else:
                 self._products[product_id] = quantity
+            return True
+
+        return False
 
     def remove_product(self,product_id:str):
-        if product_id:
-            if product_id in self._products:
-                del self._products[product_id]
+        if not product_id:
+            return False
+
+        if product_id in self._products:    
+            del self._products[product_id]
+            return True
+
+        return False
 
     def to_dict(self):
         return {

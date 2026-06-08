@@ -29,7 +29,7 @@ class ProductManager:
         except FileNotFoundError:
             raise TypeError(f"productController: O sistema não conseguiu gerar o arquivo 'products.json'.")
 
-    def add_to_stock(self,product_id:str,product_name:str,price:float,quantity_to_stock:int):
+    def add_to_stock(self,product_name:str,product_id:str,price:float,quantity_to_stock:int):
         if product_id is not None:
             for items in self.__all_products:
                 if items.product_id == product_id:
@@ -59,14 +59,21 @@ class ProductManager:
                 print("Produto especificado não existe no banco de dados.")
 
     def remove_from_stock(self,product_id):
-        if product_id is not None:
-            for index,items in enumerate(self.__all_products):
-                if items.product_id == product_id:
-                    del self.__all_products[index]
-                    self.__write()
-                    break
+        if product_id is None:
+            return False
+
+        for index,items in enumerate(self.__all_products):
+            if items.product_id == product_id:
+                del self.__all_products[index]
+                self.__write()
+                return True
+
+        return False
 
     def get_product_by_id(self,product_id):
+        if not product_id:
+            return None
+
         for product in self.__all_products:
             if product.product_id == product_id:
                 return product

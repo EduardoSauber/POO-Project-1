@@ -68,6 +68,32 @@ class StoreView:
             if product:
                 finalized = True
 
+    def delete_product(self):
+        finalized = False
+        while finalized == False:
+            print("--- Deletar Produto ---")
+            while True:
+                print("Digite o código do produto (apenas letras e números, sem espaços):")
+                inpt = input().strip()
+                if inpt.lower() == "sair":
+                    print("Operação cancelada.")
+                    finalized = True
+                    return
+                if inpt.isalnum():
+                    product_id = inpt
+                    break
+                else:
+                    print("Entrada inválida. Tente novamente.")
+
+            event = self._app.delete_product(product_id)
+
+            if event:
+                print("Produto removido do estoque com sucesso!")
+                finalized = True
+            else:
+                print("Erro ao remover produto do estoque.")
+                continue
+
     def list_products(self):
         products = self._app.get_all_products()
         for product in products:
@@ -81,7 +107,7 @@ class StoreView:
                 print("Digite o código do produto (apenas letras e números, sem espaços):")
                 inpt = input().strip()
                 if inpt.lower() == "sair":
-                    print("Operação Cancelada.")
+                    print("Operação cancelada.")
                     finalized = True
                     return
                 if inpt.isalnum():

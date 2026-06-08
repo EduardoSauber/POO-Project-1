@@ -81,9 +81,9 @@ Permite:
 - - [ ] Editar Cliente
 - - [ ] Remover Cliente
 - [ ] Gerenciar Estoque
-- - [ ] Adicionar Produto
+- - [x] Adicionar Produto
 - - [ ] Editar Produto
-- - [ ] Remover Produto
+- - [x] Remover Produto
 
 ___
 
