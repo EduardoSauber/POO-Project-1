@@ -52,18 +52,17 @@ Permite:
 ### Menu Clientes
 Permite:
 - [x] Visualizar lista de Produtos
+- [x] Listar Produtos do carrinho
 - [x] Adicionar Produto ao carrinho
-- [ ] Remover Produto do carrinho
-- [ ] Finalizar venda (também visualiza todos os itens no carrinho)
+- [x] Remover Produto do carrinho
+- [ ] Finalizar Venda
 ### Menu Super Usuário
 Permite:
 - [x] Visualizar lista de Produtos
-- [ ] Ver relatório de Vendas
-- Caso Super Usuário seja 'Caixa':
-- [ ] Processar venda física
+- [ ] Visualizar Relatório de Vendas
 - Caso Super Usuário seja 'Admin':
-- [ ] Gerenciar Administradores
-- - [ ] Listar Super Usuários
+- [x] Gerenciar Administradores
+- - [x] Listar Super Usuários
 - - [x] Cadastrar Super Usuário
 - - - [x] Recebe Nome
 - - - [x] Recebe CPF
@@ -73,16 +72,16 @@ Permite:
 - - - [x] Confirma Senha
 - - - [x] Adiciona Permissões ao Super Usuário
 - - - [x] Cria conta de Super Usuário com os dados inseridos
-- - [ ] Editar Super Usuário
-- - [ ] Remover Super Usuário
-- [ ] Gerenciar Clientes
-- - [ ] Listar Clientes
-- - [ ] Cadastrar Cliente
-- - [ ] Editar Cliente
-- - [ ] Remover Cliente
-- [ ] Gerenciar Estoque
+- - [x] Editar Super Usuário
+- - [x] Remover Super Usuário
+- [x] Gerenciar Clientes
+- - [x] Listar Clientes
+- - [x] Cadastrar Cliente (Redundante com "Cadastrar Super Usuário".)
+- - [x] Editar Cliente (Redundante com "Editar Super Usuário".)
+- - [x] Remover Cliente
+- [x] Gerenciar Estoque
 - - [x] Adicionar Produto
-- - [ ] Editar Produto
+- - [x] Editar Produto
 - - [x] Remover Produto
 
 ___
