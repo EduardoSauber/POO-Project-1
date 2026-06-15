@@ -6,10 +6,12 @@ class UserView:
     def main_menu(self):
         print("--- Painel de Usuário ---")
 
+        print("-- Menu --")
         print("[ 1 ] - Ver Catálogo de Produtos")
-        print("[ 2 ] - Adicionar ao Carrinho")
-        print("[ 3 ] - Remover do Carrinho")
-        print("[ 4 ] - Finalizar Venda")
+        print("[ 2 ] - Listar Produtos do Carrinho")
+        print("[ 3 ] - Adicionar ao Carrinho")
+        print("[ 4 ] - Remover do Carrinho")
+        print("[ 5 ] - Finalizar Venda")
         print("[ 0 ] - Sair")
 
         opcao = input("Opção: ")
@@ -17,10 +19,12 @@ class UserView:
             case '1':
                 self.products_catalog()
             case '2':
-                self.add_to_cart()
+                self.list_cart()
             case '3':
-                self.remove_from_cart()
+                self.add_to_cart()
             case '4':
+                self.remove_from_cart()
+            case '5':
                 self.finish_sale()
             case '0':
                 return "LOGOUT"
@@ -30,13 +34,14 @@ class UserView:
     def products_catalog(self):
         self._store_view.list_products()
 
+    def list_cart(self):
+        self._store_view.list_user_cart_products(self._app.get_user_by_sessionid(self._app.personal_session_id).cpf)
+
     def add_to_cart(self):
         self._store_view.add_to_user_cart(self._app.get_user_by_sessionid(self._app.personal_session_id).cpf)
 
     def remove_from_cart(self):
-        # storeView cuida dessa parte
-        pass
+        self._store_view.remove_from_user_cart(self._app.get_user_by_sessionid(self._app.personal_session_id).cpf)
 
     def finish_sale(self):
-        # storeView cuida dessa parte
         pass
