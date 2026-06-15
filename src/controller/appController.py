@@ -58,10 +58,32 @@ class AppManager:
         self._user_manager.logout(self.personal_session_id)
         self.personal_session_id = None
 
+    def edit_user_data(self,user_id,data:list):
+        if data:
+            self._user_manager.modify_user(user_id,data[0],data[1],data[2],data[3],data[4])
+
+    def delete_user(self,user_id):
+        if not user_id:
+            return False
+
+        event = self._user_manager.remove_user(user_id)
+        return event
+
     def get_user_by_sessionid(self,session_id):
         if session_id:
             return self._user_manager.get_session_id_user(session_id)
         return None
+
+    def get_user_by_cpf(self,user_id:str):
+        if user_id:
+            return self._user_manager.get_user_account(user_id=user_id)
+        return None
+
+    def get_user_list(self):
+        return self._user_manager.get_user_accounts()
+
+    def get_superuser_list(self):
+        return self._user_manager.get_superuser_accounts()
 
     # --- LOJA, PRODUTOS E CARRINHOS ---
     def create_product(self,data:list):
@@ -69,6 +91,10 @@ class AppManager:
             product = self._store_manager.create_product(data)
             return True if product else False
         return False
+
+    def edit_product_data(self,product_id:str,data:list):
+        if data and product_id:
+            self._store_manager.edit_product_data(product_id, data)
 
     def delete_product(self,product_id:str):
         if product_id:
@@ -84,9 +110,29 @@ class AppManager:
     def get_all_products(self):
         return self._store_manager.get_all_products()
 
+    def get_cart_products(self,owner_id:str):
+        if owner_id:
+            return self._store_manager.get_user_cart_products(owner_id)
+        return None
+
+    def get_cart_product_quantity(self,owner_id:str,product_id:str):
+        if owner_id and product_id:
+            return self._store_manager.get_product_quantity(owner_id,product_id)
+        return None
+
     def add_to_user_cart(self,data:list):
         if data:
             return self._store_manager.add_to_user_cart(data)
+        return False
+
+    def remove_from_user_cart(self,data:list):
+        if data:
+            return self._store_manager.remove_from_user_cart(data[0],data[1])
+        return False
+
+    def remove_qtd_from_user_cart(self,data:list):
+        if data:
+            return self._store_manager.remove_from_user_cart(data[0],data[1],data[3])
         return False
 
 
