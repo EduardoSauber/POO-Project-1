@@ -25,7 +25,7 @@ class Product:
         return self._product_id
     @product_id.setter
     def product_id(self,value:str):
-        if value.isdigit():
+        if value.isalnum():
             self._product_id = value
         else:
             raise TypeError("O valor inserido deve ser uma string de números!")

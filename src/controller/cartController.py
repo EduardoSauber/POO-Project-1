@@ -10,6 +10,8 @@ class CartManager:
         self.__all_carts = []
         self.__DATA_PATH = data_path
 
+        self.read()
+
     # Leitura e Escrita de Banco de Dados
     def read(self):
         try:
@@ -58,9 +60,10 @@ class CartManager:
         if owner_id is not None:
             for cart in self.__all_carts:
                 if cart.owner == owner_id:
-                    cart.remove_product(product_id)
+                    event = cart.remove_product(product_id)
                     self.__write()
-                    break
+                    return event
+        return False
 
     def remove_from_all_carts(self,product_id:str):
         if not product_id:
@@ -71,9 +74,11 @@ class CartManager:
         self.__write()
         return True
 
-
     def get_user_cart_products(self, owner_id):
-        return [cart.products for cart in self.__all_carts if cart.owner == owner_id]
+        for cart in self.__all_carts:
+            if cart.owner == owner_id:
+                return cart.products
+        return {}
 
 ########################################################################################################################
 # Testbench
