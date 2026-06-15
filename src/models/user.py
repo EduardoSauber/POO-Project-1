@@ -1,9 +1,14 @@
+import hashlib
+
 ########################################################################################################################
 # Class
 class User:
-    def __init__(self,username:str,password:str,cpf:str,email:str,contact:str):
+    def __init__(self,username:str,password:str,cpf:str,email:str,contact:str,is_hashed:bool = False):
         self._username = username
-        self.__password = password # criptografar a senha dps
+        if is_hashed:
+            self.__password = password
+        else:
+            self.password = password
         self._cpf = cpf
         self._email = email
         self._contact = contact
@@ -27,7 +32,8 @@ class User:
     @password.setter
     def password(self,value:str):
         if value is not None and isinstance(value,str):
-            self.__password = value
+            cript = hashlib.sha256(value.encode('utf-8'))
+            self.__password = cript.hexdigest()
         else:
             raise TypeError("A password deve ser um string!")
 
@@ -74,11 +80,12 @@ class User:
         return False
 
     def check_password(self,value:str):
-        return self.__password == value
+        hash_attempt = hashlib.sha256(value.encode('utf-8')).hexdigest()
+        return self.__password == hash_attempt
 
 class SuperUser(User):
-    def __init__(self,username,password,cpf,email,contact,permissions):
-        super().__init__(username,password,cpf,email,contact)
+    def __init__(self,username,password,cpf,email,contact,permissions,is_hashed:bool=False):
+        super().__init__(username=username,password=password,cpf=cpf,email=email,contact=contact,is_hashed=is_hashed)
         self._permissions = permissions
         if not permissions:
             self._permissions = ['user']

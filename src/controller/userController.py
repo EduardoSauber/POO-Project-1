@@ -13,6 +13,13 @@ class UserManager:
 
         self.read('user_accounts')
         self.read('superuser_accounts')
+        self.check_admins()
+
+
+    # -- Adicionar Admin genérico
+    def check_admins(self):
+        if not self.get_superuser_accounts():
+            self.create_user(username="admin",psswrd="admin123",cpf="admin",email=None,contact=None,perms=['admin'])
 
     # -- Leitura e Escrita Banco de Dados -- #
     def read(self,database):
@@ -20,7 +27,7 @@ class UserManager:
         try:
             with open(f"{self.__DATA_PATH}/{database}.json", "r") as FILE:
                 usr_data = json.load(FILE)
-                self.__all_users[database] = [account_class(**data) for data in usr_data]
+                self.__all_users[database] = [account_class(**data,is_hashed=True) for data in usr_data]
         except FileNotFoundError:
             print("userController: Não foi encontrado um banco de dados de clientes.")
             #self.__all_users[database].append(account_class('guest', "000", "00", "", ""))
@@ -36,8 +43,6 @@ class UserManager:
 
     # -- Manuseamento de usuários -- #
     def create_user(self,username,psswrd,cpf,email,contact,perms):
-        user_type = None
-
         if cpf is None:
             print("Valor 'cpf' não pode ser nulo.")
             return None
@@ -47,10 +52,12 @@ class UserManager:
 
         if perms:
             user_type = 'superuser_accounts'
-            new_user = SuperUser(username,psswrd,cpf,email,contact,perms)
+            new_user = SuperUser(username=username,password=psswrd,cpf=cpf,email=email,contact=contact,permissions=perms)
+            #new_user = SuperUser(username,psswrd,cpf,email,contact,perms)
         else:
             user_type = 'user_accounts'
-            new_user = User(username,psswrd,cpf,email,contact)
+            new_user = User(username=username,password=psswrd,cpf=cpf,email=email,contact=contact)
+            #new_user = User(username,psswrd,cpf,email,contact)
 
         self.__all_users[user_type].append(new_user)
 
@@ -86,8 +93,9 @@ class UserManager:
                     print(f"userController: O usuário '{is_super}'{user.username} foi removido do sistema.")
                     del self.__all_users[user_type][index]
                     self.__write(user_type)
-                    return
+                    return True
         print(f"userController: Usuário {user_id} não foi encontrado no sistema.")
+        return False
 
 
     def get_user_accounts(self):
@@ -143,11 +151,7 @@ def testbench():
     print('Rodando Modo Teste\n\n')
 
     testeManager = UserManager("./data")
-
-    print(testeManager.create_user("dinossarro","123","1234","teste@mail","333",False))
-    print(testeManager.create_user("user123", "123", "7785", "teste@mail", "333", False))
-    testeManager.modify_user("7785","SAUBIO")
-
+    print(testeManager.create_user("TESTENOVO","12345","55555555555","mail@mail.com","61912345678",False))
     print(testeManager.create_user("adminossarro","123","6789","teste@mail","333", ['admin']))
 
     for testeuser in testeManager.get_user_accounts():
