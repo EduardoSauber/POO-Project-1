@@ -114,7 +114,7 @@ class UserManager:
     def get_session_id_user(self,session_id):
         return self.__authenticated_users.get(session_id)
 
-    def get_username(self,session_id:str): # !!! possivelmente uma função inutil !!!
+    def get_username(self,session_id:str):
         user = self.get_session_id_user(session_id)
         return user.username if user else None
 
