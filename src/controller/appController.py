@@ -4,6 +4,7 @@ from src.controller.userController import UserManager
 from src.controller.productController import ProductManager
 from src.controller.cartController import CartManager
 from src.controller.storeController import StoreManager
+from src.view.ViewRouter import ViewRouter
 
 ########################################################################################################################
 # class
@@ -12,12 +13,11 @@ class AppManager:
         self._user_manager = UserManager(file_path)
         self._product_manager = ProductManager(file_path)
         self._cart_manager = CartManager(file_path)
-        self._store_manager = StoreManager(self._product_manager,self._cart_manager)
+        self._store_manager = StoreManager(self._product_manager,self._cart_manager,file_path)
 
-        # achar um jeito melhor de criar um admin inicial
-        #self._user_manager.create_user("ADMIN", "admin123", "99", "admin@mail", "0", ['admin'])
+        self._view_router = ViewRouter(self)
 
-        self._personal_session_id = None
+        self._personal_session_id = None # mudar de lugar (provavelmente para a main)
 
     @property
     def personal_session_id(self):
@@ -36,6 +36,9 @@ class AppManager:
             return self._user_manager.get_session_id_user(self.personal_session_id).is_admin()
         else:
             return False
+
+    def start(self):
+        self._view_router.start()
 
     # --- LOGIN E CADASTRO DE USUARIO ---
     def login(self,user_id,password):
@@ -79,6 +82,11 @@ class AppManager:
             return self._user_manager.get_user_account(user_id=user_id)
         return None
 
+    def get_user_username(self,session_id):
+        if session_id:
+            return self._user_manager.get_username(session_id)
+        return None
+
     def get_user_list(self):
         return self._user_manager.get_user_accounts()
 
@@ -86,6 +94,16 @@ class AppManager:
         return self._user_manager.get_superuser_accounts()
 
     # --- LOJA, PRODUTOS E CARRINHOS ---
+    def finish_user_purchase(self,user_id:str):
+        if not user_id:
+            return None
+
+        event = self._store_manager.make_purchase(user_id=user_id)
+        return event
+
+    def get_purchases(self):
+        return self._store_manager.get_purchases()
+
     def create_product(self,data:list):
         if data:
             product = self._store_manager.create_product(data)
@@ -132,11 +150,5 @@ class AppManager:
 
     def remove_qtd_from_user_cart(self,data:list):
         if data:
-            return self._store_manager.remove_from_user_cart(data[0],data[1],data[3])
+            return self._store_manager.remove_from_user_cart(data[0],data[1])
         return False
-
-
-# testbench
-'''
-testbench somente pelo viewRouter.py
-'''

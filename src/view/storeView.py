@@ -1,16 +1,19 @@
 from subprocess import call
 import os
 from time import sleep
+
 class StoreView:
     def __init__(self, app):
         self._app = app
 
-    def hold_menu(self,duration:int=5):
-        print(f"O menu fechará em {duration} segundo(s)...")
+    def hold_menu(self,duration:int=5,text:bool=True):
+        if text:
+            print(f"O menu fechará em {duration} segundo(s)...")
         sleep(duration)
         call('clear' if os.name == 'posix' else 'cls')
 
     def create_product(self):
+        self.hold_menu(0, False)
         finalized = False
         while finalized == False:
             print("--- CADASTRAR PRODUTO ---")
@@ -79,6 +82,7 @@ class StoreView:
                 finalized = True
 
     def edit_product(self):
+        self.hold_menu(0, False)
         finalized = False
         while finalized == False:
             print("--- Editar Dados do Produto ---")
@@ -197,6 +201,7 @@ class StoreView:
                 print("Entrada inválida! Tente novamente.")
 
     def delete_product(self):
+        self.hold_menu(0, False)
         finalized = False
         while finalized == False:
             print("--- Deletar Produto ---")
@@ -224,28 +229,37 @@ class StoreView:
                 continue
 
     def list_products(self):
+        self.hold_menu(0, False)
         products = self._app.get_all_products()
         print("--- Catálogo de Produtos ---")
         for product in products:
             print(product)
         self.hold_menu(10)
 
-    def list_user_cart_products(self,owner_id:str):
+    def list_user_cart_products(self,owner_id:str,menu:bool=True):
+        self.hold_menu(0, False)
+        if not owner_id:
+            return False
+
         user_products = self._app.get_cart_products(owner_id)
         if not user_products:
             print("Não há produtos no carrinho!")
-            return
+            return False
         print("--- Seu Carrinho ---")
         total_price = 0
         for product in user_products:
-            print(f"> {product['name']} (ID: {product['product_id']})")
+            print(f"> {product['name']} (CÓDIGO: {product['product_id']})")
             print(f"{product['quantity']} unidade(s) de R${product['unity_price']:.2f}")
             total_price += product['total_price']
             print("-"*20)
         print(f"Total: R${total_price:.2f}")
-        self.hold_menu(10)
+        if menu:
+            self.hold_menu(10)
+            return True
+        return True
 
     def add_to_user_cart(self,owner_id : str):
+        self.hold_menu(0, False)
         finalized = False
         while finalized == False:
             print("--- Adicionar ao Carrinho ---")
@@ -294,6 +308,10 @@ class StoreView:
                     print("Entrada inválida! Tente novamente.")
 
     def remove_from_user_cart(self,owner_id:str):
+        self.hold_menu(0, False)
+        if not owner_id:
+            return
+
         finalized = False
         while finalized == False:
             print("--- Remover do Carrinho ---")
@@ -339,11 +357,64 @@ class StoreView:
                 else:
                     print("Entrada inválida! Tente novamente.")
 
+            event = None
             if rm_quantity >= cart_quantity:
                 event = self._app.remove_from_user_cart([owner_id,product_id])
-
             if rm_quantity < cart_quantity:
                 event = self._app.add_to_user_cart([owner_id,product_id,-rm_quantity])
 
             if event:
                 finalized = True
+
+    def finalize_purchase(self,user_id:str):
+        self.hold_menu(0, False)
+        if not user_id:
+            return
+
+        while True:
+            print("--- Finalizar Compra ---")
+            event = self.list_user_cart_products(owner_id=user_id,menu=False)
+            if not event:
+                return
+            print("Deseja finalizar sua compra?")
+            opcao = input("[ 1 ] - Sim | [ 2 ] - Não: ")
+            match opcao:
+                case '1':
+                    purchase = self._app.finish_user_purchase(user_id=user_id)
+                    if purchase:
+                        print("Venda finalizada!")
+                        self.hold_menu(0,False)
+                        print(f"Cliente: {purchase['buyer_id']}")
+                        print("Produtos:")
+                        for c_items in purchase['items']:
+                            print(f">>{c_items['name']} (CÓDIGO: {c_items['product_id']})")
+                            print(
+                                f"  Valor Unitário: R${c_items['unity_price']:.2f}, {c_items['quantity']} unidade(s)")
+                            print(f"  Total: R${c_items['total_price']:.2f}")
+                        print(f"Total da Venda: R${purchase['total']:.2f}")
+                        print("-" * 30)
+                        self.hold_menu(10)
+                    elif not purchase:
+                        print("Erro ao finalizar compra!")
+                    return
+                case '2':
+                    print("Cancelando operação...")
+                    self.hold_menu(duration=0)
+                    return
+                case _:
+                    print("Opção inválida!")
+
+    def list_purchases_record(self):
+        self.hold_menu(0,False)
+        receipts = self._app.get_purchases()
+        for item in receipts:
+            print(f"Cliente: {item['buyer_id']}")
+            print("Produtos:")
+            for c_items in item['items']:
+                print(f">>{c_items['name']} (CÓDIGO: {c_items['product_id']})")
+                print(f"  Valor Unitário: R${c_items['unity_price']:.2f}, {c_items['quantity']} unidade(s)")
+                print(f"  Total: R${c_items['total_price']:.2f}")
+            print(f"Total da Venda: R${item['total']:.2f}")
+            print("-"*30)
+        self.hold_menu(10)
+
