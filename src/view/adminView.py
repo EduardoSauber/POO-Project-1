@@ -8,13 +8,17 @@ class AdminView:
         self._app = app
         self._store_view = storeview_instance
 
-    def hold_menu(self, duration: int = 5):
-        print(f"O menu fechará em {duration} segundo(s)...")
+    def hold_menu(self, duration: int = 5, text: bool = True):
+        if text:
+            print(f"O menu fechará em {duration} segundo(s)...")
         sleep(duration)
         call('clear' if os.name == 'posix' else 'cls')
 
     def main_menu(self):
+        self.hold_menu(0,False)
         print("--- Painel de Administração ---")
+
+        print(f"Bem vindo, {self._app.get_user_username(self._app.personal_session_id)}!")
 
         perms = self._app.personal_permissions
 
@@ -23,24 +27,34 @@ class AdminView:
             print("[ 1 ] - Gerenciar Administradores")
             print("[ 2 ] - Gerenciar Clientes")
             print("[ 3 ] - Gerenciar Estoque")
+            print("[ 4 ] - Relatório de Vendas")
         print("-- Sistema --")
         print("[ 0 ] - Sair")
 
         opcao = input("Opção: ")
         match opcao:
             case '1':
+                self.hold_menu(0, False)
                 if 'admin' in perms:
                     self.manage_admins()
                 else:
                     print("Opção inválida!")
             case '2':
+                self.hold_menu(0, False)
                 if 'admin' in perms:
                     self.manage_users()
                 else:
                     print("Opção inválida!")
             case '3':
+                self.hold_menu(0, False)
                 if 'admin' in perms:
                     self.manage_products()
+                else:
+                    print("Opção inválida!")
+            case '4':
+                self.hold_menu(0, False)
+                if 'admin' in perms:
+                    self._store_view.list_purchases_record()
                 else:
                     print("Opção inválida!")
             case '0':
@@ -49,6 +63,7 @@ class AdminView:
                 print("Opção inválida!")
 
     def manage_admins(self):
+        self.hold_menu(0, False)
         aberto = True
         while aberto == True:
             print("[ 1 ] - Listar Administradores")
@@ -59,12 +74,16 @@ class AdminView:
             opcao = input("Opção: ")
             match opcao:
                 case '1':
+                    self.hold_menu(0, False)
                     self.list_admins()
                 case '2':
+                    self.hold_menu(0, False)
                     self.add_user()
                 case '3':
+                    self.hold_menu(0, False)
                     self.edit_user()
                 case '4':
+                    self.hold_menu(0, False)
                     self.remove_user()
                 case '0':
                     aberto = False
@@ -78,6 +97,7 @@ class AdminView:
         self.hold_menu()
 
     def manage_users(self):
+        self.hold_menu(0, False)
         aberto = True
         while aberto == True:
             print("[ 1 ] - Listar Clientes")
@@ -88,12 +108,16 @@ class AdminView:
             opcao = input("Opção: ")
             match opcao:
                 case '1':
+                    self.hold_menu(0, False)
                     self.list_users()
                 case '2':
+                    self.hold_menu(0, False)
                     self.add_user()
                 case '3':
+                    self.hold_menu(0, False)
                     self.edit_user()
                 case '4':
+                    self.hold_menu(0, False)
                     self.remove_user()
                 case '0':
                     aberto = False
@@ -101,11 +125,14 @@ class AdminView:
                     print("Opção inválida!")
 
     def list_users(self):
+        self.hold_menu(0,False)
         users = self._app.get_user_list()
         for user in users:
             print(user)
+        self.hold_menu(10)
 
     def add_user(self):
+        self.hold_menu(0, False)
         finalized = False
         while finalized == False:
             print("--- CADASTRAR-SE ---")
@@ -210,6 +237,7 @@ class AdminView:
                 finalized = True
 
     def edit_user(self):
+        self.hold_menu(0, False)
         finalized = False
 
         while finalized == False:
@@ -372,6 +400,7 @@ class AdminView:
 
 
     def remove_user(self):
+        self.hold_menu(0, False)
         finalized = False
         while finalized == False:
             print("--- Remover Usuário ---")
@@ -397,6 +426,7 @@ class AdminView:
 
 
     def manage_products(self):
+        self.hold_menu(0, False)
         aberto = True
         while aberto == True:
             print("[ 1 ] - Listar Produtos")
@@ -407,14 +437,19 @@ class AdminView:
             opcao = input("Opção: ")
             match opcao:
                 case '1':
+                    self.hold_menu(0, False)
                     self._store_view.list_products()
                 case '2':
+                    self.hold_menu(0, False)
                     self._store_view.create_product()
                 case '3':
+                    self.hold_menu(0, False)
                     self._store_view.edit_product()
                 case '4':
+                    self.hold_menu(0, False)
                     self._store_view.delete_product()
                 case '5':
+                    self.hold_menu(0, False)
                     self._store_view.delete_product()
                 case '0':
                     aberto = False

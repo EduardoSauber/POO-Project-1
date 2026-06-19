@@ -1,10 +1,20 @@
 import getpass
+from subprocess import call
+import os
+from time import sleep
 
 class AuthView:
     def __init__(self,app):
         self._app = app
 
+    def hold_menu(self,duration:int=5,text:bool=True):
+        if text:
+            print(f"O menu fechará em {duration} segundo(s)...")
+        sleep(duration)
+        call('clear' if os.name == 'posix' else 'cls')
+
     def main_menu(self):
+        self.hold_menu(0,False)
         print("Bem vindo!\nO que deseja realizar?\n")
         print("[ 1 ] - Log-in")
         print("[ 2 ] - Sign-in")
@@ -13,8 +23,10 @@ class AuthView:
 
         match opcao:
             case '1':
+                self.hold_menu(0, False)
                 self.login_page()
             case '2':
+                self.hold_menu(0, False)
                 self.signin_page()
             case '0':
                 return "STOP"
