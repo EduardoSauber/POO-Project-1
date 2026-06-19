@@ -41,7 +41,7 @@ class ProductManager:
                 self.__write()
                 return novo_produto
 
-    def edit_on_stock(self,product_id,new_product_id,new_product_name,new_price,new_quantity):
+    def edit_on_stock(self,product_id=None,new_product_id=None,new_product_name=None,new_price=None,new_quantity=None):
         if product_id is not None:
             for items in self.__all_products:
                 if items.product_id == product_id:
