@@ -1,12 +1,11 @@
-from src.controller.appController import AppManager
-from view.authView import AuthView
-from view.userView import UserView
-from view.adminView import AdminView
-from view.storeView import StoreView
+from src.view.authView import AuthView
+from src.view.userView import UserView
+from src.view.adminView import AdminView
+from src.view.storeView import StoreView
 
 class ViewRouter:
-    def __init__(self,file_path):
-        self._app = AppManager(file_path)
+    def __init__(self,app):
+        self._app = app
 
         self.running = True
 
@@ -34,11 +33,3 @@ class ViewRouter:
     def stop(self):
         print("Saindo do sistema...")
         self.running = False
-
-# testbench
-def testbench():
-    print("Rodando modo teste:")
-    app = ViewRouter("../controller/data")
-    app.start()
-if __name__ == '__main__':
-    testbench()
