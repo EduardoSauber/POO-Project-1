@@ -55,11 +55,11 @@ Permite:
 - [x] Listar Produtos do carrinho
 - [x] Adicionar Produto ao carrinho
 - [x] Remover Produto do carrinho
-- [ ] Finalizar Venda
+- [x] Finalizar Venda
 ### Menu Super Usuário
 Permite:
 - [x] Visualizar lista de Produtos
-- [ ] Visualizar Relatório de Vendas
+- [x] Visualizar Relatório de Vendas
 - Caso Super Usuário seja 'Admin':
 - [x] Gerenciar Administradores
 - - [x] Listar Super Usuários
