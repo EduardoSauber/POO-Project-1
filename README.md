@@ -30,23 +30,51 @@ Projeto/
 
 ___
 
-## Descrição
+## Descrição:
 
+Sistema simulando um _e-commerce_. Desenvolvido na linguagem de programação [Python](https://www.python.org/), utilizando os conceitos básicos da [Programação Orientada a Objetos](https://www.ibm.com/docs/pt-br/ws-and-kc?topic=language-object-oriented-programming). <br>
+
+O projeto visa recriar outro projeto de trabalho final, feito por mim e por um colega de turma, da matéria Estrutura de Dados 1 ([Repositório do trabalho](https://github.com/nbg-cordeiro/Trabalho-ED1)). Esse trabalho foi o desenvolvimento de um sistema de mercado _e-commerce_ pelo terminal do Sistema Operacional.<br>
+
+Nesse projeto, o modelo [MVC](https://pt.wikipedia.org/wiki/MVC) foi utilizado durante seu desenvolvimento.
 ___
 
-## Funcionalidades
+## Como executar:
+
+### 1. Verificando o Python:
+Certifique-se que seu sistema tenha o [Python 3.x](https://www.python.org/downloads/) instalado.
+Para verificar, digite no terminal do seu Sistema Operacional (PowerShell/Command Prompt no Windows, ou Bash no Linux):
+~~~
+Python --version
+~~~
+Caso não tenha instalado, baixe pelo site oficial do [python.org](https://www.python.org/downloads/).
+
+### 2. Clonando os arquivos:
+Clone este repositório na sua máquina utilizando o [Git](https://git-scm.com/about).
+~~~
+git clone https://github.com/EduardoSauber/POO-Project-1.git
+~~~
+
+### 3. Acessando os arquivos:
+Navegue até a pasta do projeto pelo terminal:
+~~~
+cd POO-Project-1
+~~~
+
+### 4. Executando:
+Execute o arquivo `main.py`:
+~~~
+Python main.py
+~~~
+
+---
+
+## Funcionalidades:
 
 ### Menu Autenticação
 Permite:
 - [x] Login
-- [x] Cadastrar novo Usuário (signin)
-- - [x] Recebe Nome
-- - [x] Recebe CPF
-- - [x] Recebe E-mail
-- - [x] Recebe Contato telefônico
-- - [x] Recebe Senha
-- - [x] Confirma Senha
-- - [x] Cria conta de Usuário com os dados inseridos
+- [x] Cadastrar novo Usuário
 - [x] Sair do sistema
 
 ### Menu Clientes
@@ -60,24 +88,16 @@ Permite:
 Permite:
 - [x] Visualizar lista de Produtos
 - [x] Visualizar Relatório de Vendas
-- Caso Super Usuário seja 'Admin':
+- Caso Super Usuário tenha permissão 'Admin':
 - [x] Gerenciar Administradores
 - - [x] Listar Super Usuários
 - - [x] Cadastrar Super Usuário
-- - - [x] Recebe Nome
-- - - [x] Recebe CPF
-- - - [x] Recebe E-mail
-- - - [x] Recebe Contato telefônico
-- - - [x] Recebe Senha
-- - - [x] Confirma Senha
-- - - [x] Adiciona Permissões ao Super Usuário
-- - - [x] Cria conta de Super Usuário com os dados inseridos
 - - [x] Editar Super Usuário
 - - [x] Remover Super Usuário
 - [x] Gerenciar Clientes
 - - [x] Listar Clientes
-- - [x] Cadastrar Cliente (Redundante com "Cadastrar Super Usuário".)
-- - [x] Editar Cliente (Redundante com "Editar Super Usuário".)
+- - [x] Cadastrar Cliente
+- - [x] Editar Cliente
 - - [x] Remover Cliente
 - [x] Gerenciar Estoque
 - - [x] Adicionar Produto
@@ -86,6 +106,5 @@ Permite:
 
 ___
 
-## Requisitos técnicos
 
 
