@@ -65,7 +65,7 @@ cd POO-Project-1
 ### 4. Executando:
 Execute o arquivo `main.py`:
 ~~~
-Python main.py
+python main.py
 ~~~
 
 ---
