@@ -10,9 +10,9 @@ class StoreManager:
         self.__purchases = []
         self.__DATA_PATH = data_path
 
-        self.read()
+        self.__read()
 
-    def read(self):
+    def __read(self):
         try:
             with open(f"{self.__DATA_PATH}/purchases.json", "r") as FILE:
                 pur_data = json.load(FILE)

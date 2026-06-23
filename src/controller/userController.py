@@ -11,8 +11,8 @@ class UserManager:
         self.__authenticated_users = {}
         self.__DATA_PATH = data_path
 
-        self.read('user_accounts')
-        self.read('superuser_accounts')
+        self.__read('user_accounts')
+        self.__read('superuser_accounts')
         self.check_admins()
 
 
@@ -22,7 +22,7 @@ class UserManager:
             self.create_user(username="admin",psswrd="admin123",cpf="admin",email=None,contact=None,perms=['admin'])
 
     # -- Leitura e Escrita Banco de Dados -- #
-    def read(self,database):
+    def __read(self,database):
         account_class = SuperUser if (database == 'superuser_accounts') else User
         try:
             with open(f"{self.__DATA_PATH}/{database}.json", "r") as FILE:
@@ -114,15 +114,15 @@ class UserManager:
     def get_session_id_user(self,session_id):
         return self.__authenticated_users.get(session_id)
 
-    def get_username(self,session_id:str):
-        user = self.get_session_id_user(session_id)
-        return user.username if user else None
-
     def get_user_session_id(self,user_id:str):
         for session_id in self.__authenticated_users:
             if user_id == self.__authenticated_users[session_id].cpf:
                 return session_id
         return None
+
+    def get_username(self,session_id:str):
+        user = self.get_session_id_user(session_id)
+        return user.username if user else None
 
     def get_session_permissions(self, session_id):
         if session_id:
@@ -148,15 +148,17 @@ class UserManager:
 
 # Test bench
 def testbench():
-    print('Rodando Modo Teste\n\n')
+    Controller = UserManager("./data")
 
-    testeManager = UserManager("./data")
-    print(testeManager.create_user("TESTENOVO","12345","55555555555","mail@mail.com","61912345678",False))
-    print(testeManager.create_user("adminossarro","123","6789","teste@mail","333", ['admin']))
-
-    for testeuser in testeManager.get_user_accounts():
-        print(testeuser)
-
+    Controller.create_user("Teste","12345","12345678912","mail@mail.m","1212345678",False)
+    for item in Controller.get_user_accounts():
+        print(item)
+    Controller.modify_user("12345678912",n_username="NomeTeste")
+    for item in Controller.get_user_accounts():
+        print(item)
+    Controller.remove_user("12345678912")
+    for item in Controller.get_user_accounts():
+        print(item)
 
 if __name__ == '__main__':
     testbench()

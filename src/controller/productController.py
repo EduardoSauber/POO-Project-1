@@ -10,14 +10,15 @@ class ProductManager:
         self.__all_products= []
         self.__DATA_PATH = data_path
 
-        self.read()
+        self.__read()
 
-    def read(self):
+    def __read(self):
         try:
             with open(f"{self.__DATA_PATH}/products.json", "r") as FILE:
                 prdct_data = json.load(FILE)
                 self.__all_products = [Product(**data) for data in prdct_data]
         except FileNotFoundError:
+            pass
             print("productController: Não foi encontrado um banco de dados de produtos.")
 
     def __write(self):
@@ -86,13 +87,17 @@ class ProductManager:
 # Testbench
 
 def testbench():
-    print("Rodando Modo Teste!")
+    Controller = ProductManager("./data")
 
-    teste_products = ProductManager("./data")
-    teste_products.add_to_stock("123","teste",50,50)
-
-    for testeproduct in teste_products.get_products():
-        print(testeproduct)
+    Controller.add_to_stock("Teste","codigoteste123",12.95,50)
+    for item in Controller.get_products():
+        print(item)
+    Controller.edit_on_stock("codigoteste123",new_product_name="ProdutoTeste")
+    for item in Controller.get_products():
+        print(item)
+    Controller.remove_from_stock("codigoteste123")
+    for item in Controller.get_products():
+        print(item)
 
 if __name__ == "__main__":
     testbench()

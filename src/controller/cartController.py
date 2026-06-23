@@ -10,10 +10,10 @@ class CartManager:
         self.__all_carts = []
         self.__DATA_PATH = data_path
 
-        self.read()
+        self.__read()
 
     # Leitura e Escrita de Banco de Dados
-    def read(self):
+    def __read(self):
         try:
             with open(f"{self.__DATA_PATH}/carts.json", "r") as FILE:
                 cart_data = json.load(FILE)
@@ -65,15 +65,6 @@ class CartManager:
                     return event
         return False
 
-    def remove_from_all_carts(self,product_id:str):
-        if not product_id:
-            return False
-        r_flag = False
-        for cart in self.__all_carts:
-            cart.remove_product(product_id)
-        self.__write()
-        return True
-
     def get_user_cart_products(self, owner_id):
         for cart in self.__all_carts:
             if cart.owner == owner_id:
@@ -84,10 +75,15 @@ class CartManager:
 # Testbench
 
 def testbench():
-    print("Rodando Modo Teste!\n\n")
+    Controller = CartManager("./data")
 
-    testeManager = CartManager("./data")
+    print(Controller.get_cart("12345678912"))
+    Controller.add_to_user_cart("12345678912","codigoteste123", 25)
+    print(Controller.get_user_cart_products("12345678912"))
+    Controller.remove_from_cart("12345678912","codigoteste123")
+    print(Controller.get_user_cart_products("12345678912"))
 
+    Controller.remove_cart("12345678912")
 
 if __name__ == '__main__':
     testbench()
