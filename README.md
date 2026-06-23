@@ -43,7 +43,7 @@ ___
 ## Como executar:
 
 ### 1. Verificando o Python:
-Certifique-se que seu sistema tenha o [Python 3.x](https://www.python.org/downloads/) instalado.
+Certifique-se que o seu dispositivo tenha o [Python 3.x](https://www.python.org/downloads/) instalado.
 Para verificar, digite no terminal do seu Sistema Operacional (PowerShell/Command Prompt no Windows, ou Bash no Linux):
 ~~~
 Python --version
@@ -72,6 +72,11 @@ Python main.py
 
 ## Funcionalidades:
 
+O programa sempre verifica a existência de, pelo menos, uma conta "admin" ao ser inicializado. Caso ela não tenha (primeira inicialização do sistema), uma conta com ID (CPF) "admin" e senha "admin123" é criada. <br>
+Essa conta pode ser alterada futuramente da seguinte forma: <br>
+1. acessar o arquivo `./src/controller/data/superuser_accounts.json` pelo seu editor de texto ou IDE de preferência e remover o usuário de CPF "admin" (não pode ser removido diretamente pelo sistema).
+2. abrir userController.py pelo seu editor de texto ou IDE de preferência e alterar os dados inseridos no método `check_admins()`).
+3. inicializar o programa.
 ### Menu Autenticação
 Permite:
 - [x] Login
