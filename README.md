@@ -2,6 +2,16 @@
 
 ___
 
+## Descrição:
+
+Sistema simulando um _e-commerce_. Desenvolvido na linguagem de programação [Python](https://www.python.org/), utilizando os conceitos básicos da [Programação Orientada a Objetos](https://www.ibm.com/docs/pt-br/ws-and-kc?topic=language-object-oriented-programming). <br>
+
+O projeto visa recriar outro projeto de trabalho final, feito por mim e por um colega de turma, da matéria Estrutura de Dados 1 ([Repositório do trabalho](https://github.com/nbg-cordeiro/Trabalho-ED1)). Esse trabalho foi o desenvolvimento de um sistema de mercado _e-commerce_ pelo terminal do Sistema Operacional.<br>
+
+Nesse projeto, o modelo [MVC](https://pt.wikipedia.org/wiki/MVC) foi utilizado durante seu desenvolvimento.
+
+___
+
 ## Estrutura do Projeto
 
 ~~~
@@ -28,15 +38,6 @@ Projeto/
 └── main.py
 ~~~
 
-___
-
-## Descrição:
-
-Sistema simulando um _e-commerce_. Desenvolvido na linguagem de programação [Python](https://www.python.org/), utilizando os conceitos básicos da [Programação Orientada a Objetos](https://www.ibm.com/docs/pt-br/ws-and-kc?topic=language-object-oriented-programming). <br>
-
-O projeto visa recriar outro projeto de trabalho final, feito por mim e por um colega de turma, da matéria Estrutura de Dados 1 ([Repositório do trabalho](https://github.com/nbg-cordeiro/Trabalho-ED1)). Esse trabalho foi o desenvolvimento de um sistema de mercado _e-commerce_ pelo terminal do Sistema Operacional.<br>
-
-Nesse projeto, o modelo [MVC](https://pt.wikipedia.org/wiki/MVC) foi utilizado durante seu desenvolvimento.
 ___
 
 ## Como executar:
